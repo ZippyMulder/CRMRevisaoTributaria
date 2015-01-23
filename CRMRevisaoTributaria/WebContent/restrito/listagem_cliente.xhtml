@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html5 PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+	<ui:composition template="/templates/interna.xhtml">
+      	
+      	<ui:define name="head">  
+   			<h:outputStylesheet library="css/publico" name="grid.css"/>  
+   			<h:outputStylesheet library="bootstrap-3.3.1/css/custom" name="dotbuild-bootstrap.css" />
+   		</ui:define>      
+   		
+
+
+	 	<ui:define name="corpo">
+			
+			<!-- Page Heading -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">
+                        <h:graphicImage library="images/menu" name="menu-listagem1.png"></h:graphicImage> Listagem de Clientes Reservados
+                    </h1>
+                    
+					<sec:ifAnyGranted roles="ROLE_ADMINISTRADOR">
+                    
+	                    <h:form id="pesquisa">
+	                    
+						  	<h:messages errorClass="alert alert-danger" warnClass="alert alert-warning" fatalClass="alert alert-danger" infoClass="alert alert-info" />
+						  	
+							<div class="panel panel-default">
+							  	<div class="panel-heading">Filtros</div>
+							  	<div class="panel-body">	
+				
+									
+								
+										<h:outputLabel class="labelDotbuild" value="Representante:" for="pesquisa"/>
+								  	
+										<h:selectOneMenu id="pesquisa" value="#{clienteBean.representante.codigo}"
+											valueChangeListener="#{clienteBean.setRepresentante}" 
+											onchange="submit()"
+											styleClass="form-control">
+											<f:selectItems 	value="#{clienteBean.listaRepresentante}" 
+															var="representante"
+															itemValue="#{representante.codigo}"
+															itemLabel="#{representante.nome}"/>
+										</h:selectOneMenu>		
+									
+											
+									
+							  	</div>
+						  	</div>
+						  	
+					  	</h:form>
+					  	
+				  	</sec:ifAnyGranted>
+					  	
+				  	<h:form id = "listagemReservasClientes">
+				  		
+				  			<!-- Para que a Grid consiga ser carregado assim que carregada a pagina! -->
+		  			  		<f:metadata>
+		   						<f:event type="preRenderView" listener="#{clienteBean.iniciarListagem_Cliente}" />
+							</f:metadata>
+					  				
+							<div class="panel panel-default">
+							  	<div class="panel-heading">Clientes Reservados por #{clienteBean.representante.nome} </div>
+							  	<div class="panel-body">	
+							  	  	
+									<h:dataTable value="#{clienteBean.listagemReserva}" var="lReserva"  rules="rows" cellpadding="5" styleClass="mGrid"  rowClasses="alt" rendered="#{clienteBean.sizelistagemReserva > 0}">
+										
+										<h:column>
+											<f:facet name="header">CNPJ</f:facet>
+											<h:outputText value="#{lReserva.cnpj}" >
+												<f:converter converterId="CnpjConverter" />
+											</h:outputText>
+										</h:column>
+										<h:column>
+											<f:facet name="header">Razão Social</f:facet>
+											<h:outputText value="#{lReserva.razaoSocial}" />
+										</h:column>
+										<h:column>
+											<f:facet name="header">Endereço</f:facet>
+											<h:outputText value="#{lReserva.endereco}" />
+										</h:column>
+										<h:column>
+											<f:facet name="header">Cidade</f:facet>
+											<h:outputText value="#{lReserva.cidade}" />
+										</h:column>
+										<h:column>
+											<f:facet name="header">Data</f:facet>
+											<h:outputText value="#{lReserva.dataReserva}">
+												<f:convertDateTime pattern = "dd/MM/yyyy hh:mm:ss"></f:convertDateTime>
+											</h:outputText>
+										</h:column>
+										<h:column>
+											<f:facet name="header">Crédito Estimado</f:facet>
+											<h:outputText value="#{lReserva.creditoEstimado}">
+												<f:convertNumber currencyCode="BRL" type="currency" maxFractionDigits="2" />
+											</h:outputText>
+										</h:column>
+										<h:column>
+											<f:facet name="header">Sub Representante</f:facet>
+											<h:outputText value="#{lReserva.subRepresentante}"/>
+										</h:column>
+										
+										<sec:ifAnyGranted roles="ROLE_ADMINISTRADOR">
+											<h:column>
+												<h:commandLink action="#{clienteBean.cancelarReserva}"  title="Cancelar Reserva">
+													<h:graphicImage library="images/grid" name="deletar.png" style="border:0"/>
+													<f:setPropertyActionListener target="#{clienteBean.reservaPK.usuario}" value="#{lReserva.usuario}"/>
+													<f:setPropertyActionListener target="#{clienteBean.reservaPK.cliente}" value="#{lReserva.cliente}"/>
+												</h:commandLink>
+											</h:column>
+										</sec:ifAnyGranted>
+
+									</h:dataTable>
+									
+									<h:outputText id="Mensagem" value="Nenhum cliente reservado!" rendered="#{clienteBean.sizelistagemReserva == 0}"></h:outputText>
+									
+								</div>
+						  	</div>		
+						  	
+			  		</h:form>	
+					  	
+                </div>
+                
+            </div>         
+			
+		</ui:define>
+
+	</ui:composition>
+
+</html>

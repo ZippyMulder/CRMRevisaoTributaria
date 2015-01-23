@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html5 PUBLIC "-//W3C//DTD XHMTL 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/
+xhtml1-strict-dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+<h:head>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/> 
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    
+    <h:outputStylesheet library="bootstrap-3.3.1/css" name="bootstrap.min.css" />
+    <h:outputStylesheet library="bootstrap-3.3.1/css" name="bootstrap-theme.min.css" />
+    <h:outputStylesheet library="bootstrap-3.3.1/css/custom" name="sb-admin.css" />
+    <h:outputStylesheet library="bootstrap-3.3.1/css/custom" name="morris.css" />
+    <h:outputStylesheet library="bootstrap-3.3.1/css/custom" name="dotbuild-bootstrap-menu.css" />
+    
+
+    <h:outputScript library="jquery" name="jquery-1.11.2.min.js" />    
+    <h:outputScript library="bootstrap-3.3.1/js" name="bootstrap.min.js" />
+    
+    
+    <ui:insert name="head">  
+    </ui:insert>  
+     
+    <script>
+        $a = jQuery.noConflict();
+        $a(document).ready(function() {
+            a$('.dropdown-toggle').dropdown();
+        });
+    </script>
+         
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+     
+</h:head>
+
+
+<h:body>
+
+
+
+	<div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        
+        	<ui:insert name="barra_menu">
+         		<ui:include src="/restrito/menu_sistema.xhtml"/>
+       		</ui:insert>
+
+        </nav>
+				
+		<div id="page-wrapper">
+
+			<div class="container-fluid">
+	       
+				<div class="col-lg-12">
+	
+	       			<ui:insert name="corpo">
+					</ui:insert>
+	       	
+       			</div>
+           
+   	 		</div>
+           	<!-- /.container-fluid -->
+
+   		</div>
+      	<!-- /#page-wrapper -->
+      	
+	</div>
+	 
+</h:body>
+
+</html>

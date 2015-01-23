@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html5 PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+	<h:head>
+	
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge"/> 
+	    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+	    <meta name="description" content=""/>
+	    <meta name="author" content=""/>
+	    
+	    <h:outputStylesheet library="bootstrap-3.3.1/css" name="bootstrap.css" />
+	    <h:outputStylesheet library="bootstrap-3.3.1/css/custom" name="dotbuild-bootstrap.css" />
+
+	    <h:outputScript library="bootstrap-3.3.1/js" name="bootstrap.min.js" />
+
+	</h:head>
+
+	
+	<h:body>
+	
+	
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+ 		</nav>
+
+		<br/>
+		<br/>
+		<br/>
+		
+		<div id="page-wrapper">
+
+			<div class="container-fluid">
+	       
+				<div class="col-lg-12">
+	
+		
+	            	<div class="row">
+                		
+                		<div class="col-lg-12">
+		                    
+		                    <h1 class="page-header">
+		                        <h:graphicImage library="images/esqueceu_senha" name="esqueceu-senha.png"></h:graphicImage> Esqueci minha senha
+		                    </h1>
+		                    
+							<div class="panel panel-default">
+								<div class="panel-heading">Informe os dados para o envio de uma nova senha </div>
+								<div class="panel-body">	
+								
+									<h:form id ="enviarSenha">
+									
+										<h:messages errorClass="alert alert-danger" warnClass="alert alert-warning" fatalClass="alert alert-danger" infoClass="alert alert-info" />
+								
+										<h:panelGrid columns="2">
+										
+											<h:outputLabel value="E-Mail:" for="email" class="navbar-text"/>
+											
+											<h:inputText id="email" 
+												label="E-Mail" 
+												value="#{usuarioBean.usuario.email}" 
+												size="50" maxlength="50" 
+												class="form-control">
+											</h:inputText>
+											
+			   	    						<center>			
+												<h:commandButton class="btn btn-default navbar-btn" action="#{usuarioBean.enviarNovaSenha}" value="Enviar senha"/>
+											</center>
+											
+												
+										</h:panelGrid>
+									
+									</h:form>
+							
+								</div>
+							
+							</div>
+							
+							<h:link outcome="/publico/login">
+								<h:graphicImage library="images/publico" name="voltar.png"></h:graphicImage> Voltar para o login
+							</h:link>	
+					
+						</div>
+						
+		     		</div>
+		     	
+	     		</div>
+	     	
+     		</div>
+     		
+   		</div>
+		     
+
+        <!-- Navigation -->
+		<nav class="navbar navbar-inverse navbar-fixed-bottom colorblue">
+	      	<!-- End Login box -->
+	     	<footer class="container">
+	     		<p id="footer-text"><small>Copyright &copy; 2015 Dotbuild</small></p>
+	     	</footer>
+		</nav>
+	     	
+    </h:body>
+	
+</html>

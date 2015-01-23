@@ -1,0 +1,4 @@
+.ui-icon
+{
+    background-image: url("#{resource['images/login/background-image-1.jpg']}");
+}

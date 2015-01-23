@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html5 PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+	<h:head>
+	
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge"/> 
+	    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+	    <meta name="description" content=""/>
+	    <meta name="author" content=""/>
+	    
+	    <h:outputStylesheet library="bootstrap-3.3.1/css" name="bootstrap.css" />
+	    <h:outputStylesheet library="css/login" name="login.css" />
+	    <h:outputStylesheet library="css/login" name="animate-custom.css" />
+	    <h:outputStylesheet library="bootstrap-3.3.1/css/custom" name="dotbuild-bootstrap.css" />
+	    <h:outputStylesheet library="" href="#{request.contextPath}/css/default.css" />
+	
+	    <h:outputScript library="jquery" name="jquery-1.11.2.min.js" />    
+	    <h:outputScript library="bootstrap-3.3.1/js" name="bootstrap.min.js" />
+	    <h:outputScript library="js/login" name="custom.js" />
+	    <h:outputScript library="js/login" name="placeholder-shim.min.js" />
+	    <h:outputScript library="js/login" name="modernizr.custom.js" />
+	    
+	     
+	    
+	         
+	    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	    <!--[if lt IE 9]>
+	        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	    <![endif]-->
+	    
+	    <!--[if IE 8]> 				 
+	    	<html class="no-js lt-ie9" lang="en" > 
+	    <![endif]-->
+		<!--[if gt IE 8]>
+			<html class="no-js" lang="en" >
+		<![endif]-->
+	     
+	</h:head>
+
+	
+	<h:body>
+	
+	
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+ 		</nav>
+
+		<div class="container" id="login-block">
+  			<div class="row">
+		    	<div class="col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4">
+	    			<h3 class="animated bounceInDown">Login</h3>
+			       	<div class="login-box clearfix animated flipInY">
+			        	<div class="login-logo">
+			        		<a href="#"><h:graphicImage library="images/login" name="logo1.png"/></a>
+			        	</div> 
+			        	<hr />
+			        	<div class="login-form">
+			        		<form id="login" method="post" action="${request.contextPath}/j_spring_security_check">
+						   		 <input type="text" name='j_username' placeholder="Usuário" /> 
+						   		 <input type="password" name='j_password' placeholder="Senha" /> 
+						   		 <button type="submit" class="btn btn-red">Login</button> 
+						   		 
+						   		 <div class="login-formcheckbox"> 
+						   		 	<input type="checkbox" value="Mantenha-me conectado" name="_spring_security_remember_me"/> Mantenha-me conectado
+						   		 </div>
+						   	
+								<div class="login-links"> 
+						            <h:link outcome="/publico/esqueceu_senha">
+						          	   Esqueceu a senha?
+						            </h:link>
+								</div>  
+								
+								<script>
+									document.getElementById("login").j_username.value = "#{SPRING_SECURITY_LAST_USERNAME}";
+								</script>
+							
+							</form>	
+							    		
+			        	</div> 	
+			        			        	
+			       	</div>
+			       	
+					<h:panelGroup rendered="#{!empty param.login_error}">
+						<span style="font-color:red"> Usuário ou Senha inválidos.</span><br />
+						<!-- Motivo: #{SPRING_SECURITY_LAST_EXCEPTION.message} -->
+					</h:panelGroup>
+				  	   	
+			    </div>
+			</div>
+  		</div>
+		     
+
+     	
+        <!-- Navigation -->
+		<nav class="navbar navbar-inverse navbar-fixed-bottom colorblue">
+	      	<!-- End Login box -->
+	     	<footer class="container">
+	     		<p id="footer-text"><small>Copyright &copy; 2015 Dotbuild</small></p>
+	     	</footer>
+		</nav>
+	     	
+    </h:body>
+	
+</html>

@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html5 PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+	<ui:composition template="/templates/interna.xhtml">
+      	
+      	<ui:define name="head">  
+   			<h:outputStylesheet library="css/publico" name="grid.css"/>  
+   			<h:outputStylesheet library="bootstrap-3.3.1/css/custom" name="dotbuild-bootstrap.css" />
+   		</ui:define>      
+
+	 	<ui:define name="corpo">
+			
+			<!-- Page Heading -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">
+                        <h:graphicImage library="images/menu" name="menu-pesquisa1.png"></h:graphicImage> Pesquisa de Clientes
+                    </h1>
+                    
+                    <h:form id="pesquisa">
+                    
+	  			  		<f:metadata>
+	   						<f:event type="preRenderView" listener="#{clienteBean.iniciar}" />
+						</f:metadata>
+                    
+					  	<h:messages errorClass="alert alert-danger" warnClass="alert alert-warning" fatalClass="alert alert-danger" infoClass="alert alert-info" />
+					  	
+					  	
+						<div class="panel panel-default">
+						  	<div class="panel-heading">Filtros</div>
+						  	<div class="panel-body">	  		
+									
+								<div class="panelMarginRight">		  	
+							  		<h:selectOneRadio value="#{clienteBean.tipoPesquisa}">
+							   			<f:selectItem itemValue="1" itemLabel="Pesquisa por CNPJ"/>
+							   			<f:selectItem itemValue="2" itemLabel="Pesquisa por Razão Social" />
+									</h:selectOneRadio>	
+								</div>
+
+								<br/>
+								<h:inputText id="pesquisa" label="Pesquisa" value="#{clienteBean.campoPesquisa}" class="form-control" placeholder="Pesquisa">
+								</h:inputText>	
+								
+								<div style="text-align: right;">
+									<h:commandButton class="btn btn-default navbar-btn" action="#{clienteBean.pesquisarCliente}" value="Pesquisar"/>
+								</div>
+								
+						  	</div>
+					  	</div>
+					  	
+				  	</h:form>
+					  	
+				  	<h:form id = "listagemCliente" rendered="#{!empty clienteBean.lista and clienteBean.listaSize > 1}">
+					  				
+							<div class="panel panel-default">
+							  	<div class="panel-heading">Resultado</div>
+							  	<div class="panel-body">	
+							  	  	
+									<h:dataTable value="#{clienteBean.lista}" var="cliente"  rules="rows" cellpadding="5" styleClass="mGrid"  rowClasses="alt" >
+										<f:facet name="header"><center>Clientes encontrados</center></f:facet>
+										
+										<h:column>
+											<f:facet name="header">CNPJ</f:facet>
+											<h:outputText value="#{cliente.cnpj}" >
+												<f:converter converterId="CnpjConverter" />
+											</h:outputText>
+										</h:column>
+										<h:column>
+											<f:facet name="header">Razão Social</f:facet>
+											<h:outputText value="#{cliente.razaoSocial}" />
+										</h:column>
+										<h:column>
+											<f:facet name="header">Endereço</f:facet>
+											<h:outputText value="#{cliente.endereco}" />
+										</h:column>
+										<h:column>
+											<f:facet name="header">Cidade</f:facet>
+											<h:outputText value="#{cliente.cidade}" />
+										</h:column>
+										
+										<h:column>
+											<h:commandLink action="#{clienteBean.exibirDetalhes}" value="Exibir Detalhes" update = "detalhes">
+												<f:setPropertyActionListener target="#{clienteBean.cliente}" value="#{cliente}"/>
+											</h:commandLink>
+										</h:column>
+
+									</h:dataTable>
+									
+								</div>
+						  	</div>		
+						  	
+			  		</h:form>	
+					  	
+				  	<h:form id = "detalhes">
+					  	
+						  	<div class="panel panel-default">
+							  	<div class="panel-heading">Detalhes</div>
+							  	<div class="panel-body">	
+							  	
+								<h:panelGrid columns="4">
+				        
+									<h:outputLabel class="navbar-text" value="Empresa:" for="empresa" />
+									<h:outputText class="navbar-text" id="empresa" value="#{clienteBean.cliente.razaoSocial}" />
+									<h:outputText/>
+									<h:outputText/>
+	
+									<h:outputLabel class="navbar-text" value="CNPJ:" for="cnpj"/>
+									<h:outputText class="navbar-text" id="cnpj" value="#{clienteBean.cliente.cnpj}">
+										<f:converter converterId="CnpjConverter" />
+									</h:outputText>
+									<h:outputText/>
+									<h:outputText/>
+									
+									<h:outputLabel class="navbar-text" value="Endereço:" for="endereco" />
+									<h:outputText class="navbar-text" id="endereco" value="#{clienteBean.cliente.endereco}" />
+									<h:outputText/>
+									<h:outputText/>
+									
+									<h:outputLabel class="navbar-text" value="Cidade:" for="cidade" />
+									<h:outputText class="navbar-text" id="cidade" value="#{clienteBean.cliente.cidade}" />
+									<h:outputText/>
+									<h:outputText/>
+									
+									<sec:ifAnyGranted roles="ROLE_ADMINISTRADOR">
+									
+										<h:outputLabel class="navbar-text" value="PIS Recolhido:" for="pisRecolhido" />
+										<h:outputText class="navbar-text" id="pisRecolhido" value="#{clienteBean.credito.totalPis}" >
+											<f:convertNumber currencyCode="BRL" type="currency" maxFractionDigits="2" />
+										</h:outputText>
+										
+									</sec:ifAnyGranted>
+									
+									<h:outputLabel class="navbar-text" value="Período dos dados:" />
+									
+									<h:panelGrid columns="3">
+										<h:outputText class="navbar-text" id="periodoDadosInicial" value="#{clienteBean.credito.periodoInicial}" >
+											<f:convertDateTime pattern="MM/yyyy" />
+										</h:outputText>
+										<h:outputLabel class="navbar-text" value="-" />	
+										<h:outputText class="navbar-text" id="periodoDadosFinal" value="#{clienteBean.credito.periodoFinal}">
+											<f:convertDateTime pattern="MM/yyyy"/>
+										</h:outputText>
+									</h:panelGrid>
+									
+									<sec:ifAnyGranted roles="ROLE_ADMINISTRADOR">
+									
+										<h:outputLabel class="navbar-text" value="COFINS Recolhido:" for="cofinsRecolhido" />
+										<h:outputText class="navbar-text" id="cofinsRecolhido" value="#{clienteBean.credito.totalCofins}" >
+											<f:convertNumber currencyCode="BRL" type="currency" maxFractionDigits="2" />
+										</h:outputText>
+										
+									</sec:ifAnyGranted>	
+										
+									<h:outputLabel class="navbar-text" value="Crédito Estimado:" for="creditoEstimado" />
+									<h:outputText class="navbar-text" id="creditoEstimado" value="#{clienteBean.credito.creditoEstimado}" >
+										<f:convertNumber currencyCode="BRL" type="currency" maxFractionDigits="2" />
+									</h:outputText>
+								
+								</h:panelGrid>
+							  	  	
+							  	
+								</div>
+						  	</div>		
+						  	
+				  	</h:form>	
+				  	
+				  	<h:form id = "historico">		
+						
+						<div class="panel panel-default">
+						  	<div class="panel-heading">Histórico</div>
+						  	<div class="panel-body">	
+						  	
+						  		<h:panelGrid columns="8" rendered="#{clienteBean.situacao == true}">
+						  			<h:outputLabel class="navbar-text" value="Reservado por:" />
+						  			<h:outputText class="navbar-text" id="representante" value="#{clienteBean.reserva.usuario.nome}" />
+						  			<h:outputLabel class="navbar-text" value="dia: " />
+						  			<h:outputText class="navbar-text" id="data" value="#{clienteBean.reserva.dataReserva}">
+						  				<f:convertDateTime pattern="dd/MM/yyyy" />  
+						  			</h:outputText>
+						  			<h:outputLabel class="navbar-text" value="as: " />
+						  			<h:outputText class="navbar-text" id="hora" value="#{clienteBean.reserva.dataReserva}">
+						  				<f:convertDateTime pattern="hh:mm:ss"/>  
+						  			</h:outputText>
+						  			<h:outputLabel class="navbar-text" value="Sub Representante:" />
+						  			<h:outputText class="navbar-text" id="subRepresentanteLabel" value="#{clienteBean.reserva.subRepresentante}" />
+						  		</h:panelGrid>
+						  		
+					  			<h:panelGrid columns="2" rendered="#{clienteBean.situacao == false and clienteBean.existeCodigoCliente == true}">
+									<h:outputLabel class="navbar-text" value="Sub Representante:" for="subRepresentate"/>
+						  			<h:inputText class="form-control" id="subRepresentante" value="#{clienteBean.reserva.subRepresentante}" maxlength="250" size = "142"/>
+									<h:commandButton class="btn btn-default navbar-btn" action="#{clienteBean.reservarCliente}" value="Reservar esse Cliente"/>
+					  		  	</h:panelGrid>	
+						  	
+							</div>
+					  	</div>	
+					  	
+				  	</h:form>
+							
+
+			        <!-- ======================================================================================================================================= -->
+					
+                </div>
+                
+            </div>         
+			
+		</ui:define>
+
+	</ui:composition>
+
+</html>

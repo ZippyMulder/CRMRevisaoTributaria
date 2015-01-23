@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html5 PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:p="http://primefaces.org/ui"
+xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+	<ui:composition template="/templates/interna.xhtml">
+      	
+      	<ui:define name="head">  
+   			<h:outputStylesheet library="css/publico" name="grid.css"/>
+   			<h:outputStylesheet library="css/primefacescustom" name="prime-custom.css"/>    
+   			
+   		</ui:define>      
+   		
+
+            
+	 	<ui:define name="corpo">
+			
+			<!-- Page Heading -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">
+                        <h:graphicImage library="images/menu" name="menu-caduser1.png"></h:graphicImage> Cadastro de Usuário
+                    </h1>
+                    
+                    <div class="panel panel-default">
+			  			<div class="panel-heading">Informe os dados para o cadastro</div>
+					  	<div class="panel-body">	
+                    
+		                    <h:form id="cadastro">
+		            
+							  	<h:messages errorClass="alert alert-danger" warnClass="alert alert-warning" fatalClass="alert alert-danger" infoClass="alert alert-info" />
+							  	
+							  	<!-- Campos apenas utilizados pelo bean -->
+								<h:inputHidden value="#{usuarioBean.usuario.codigo}"/>
+								<h:inputHidden value="#{usuarioBean.destinoSalvar}"/>
+								<h:inputHidden value="#{usuarioBean.senhaCriptografada}"/>
+								<h:inputHidden value="#{usuarioBean.processo}"/>
+			
+								<!-- Verifica a permissão do usuário e bloqueia os campos necessários =============================================================================== -->
+								<sec:ifAnyGranted roles="ROLE_ADMINISTRADOR">
+								
+									<h:panelGrid columns="2">
+								
+										<h:outputLabel class="navbar-text" value="Nome:" for="nome" />
+										<h:inputText id="nome" label="Nome" value="#{usuarioBean.usuario.nome}"  maxlength="250" class="form-control" placeholder="Nome">
+										</h:inputText>					
+											
+										<h:outputLabel class="navbar-text" value="Usuário:" for="login"/>
+										<h:inputText id="login" 
+										             label="Usuário" 
+										             value="#{usuarioBean.usuario.login}" 
+										             size="50" maxlength="50"
+										             class="form-control" placeholder="Login">
+										</h:inputText>
+										
+										<h:outputLabel class="navbar-text" value="Senha:" for="senha"/>
+										<h:inputSecret id="senha" label="Senha" value="#{usuarioBean.usuario.senha}" size="15" maxlength="15" redisplay="false" class="form-control" placeholder="Senha"/>
+										
+										<h:outputLabel class="navbar-text" value="Confirmar Senha:" for="confirmarsenha"/>
+										<h:inputSecret id="confirmarsenha" label="Confirmar Senha" value="#{usuarioBean.confirmarSenha}" size="15" maxlength="15" redisplay="false" class="form-control" placeholder="Confirmar Senha"/>
+										
+										<h:outputLabel class="navbar-text" value="e-Mail:" for="email"/>
+										<h:panelGroup>
+											<h:inputText id="email" 
+												label="e-Mail" 
+												value="#{usuarioBean.usuario.email}" 
+												size="100" maxlength="100"
+												class="form-control" placeholder="E-mail">
+											</h:inputText>
+										</h:panelGroup>
+										
+										
+										<h:outputLabel class="navbar-text" value="Tipo:" for="tipo"/>
+										
+										<h:selectOneMenu id="tipo" value="#{usuarioBean.tipo}" style="width:405px" styleClass="form-control">
+								            <f:selectItem itemLabel="Administrador" itemValue="ROLE_ADMINISTRADOR" />
+								            <f:selectItem itemLabel="Representante" itemValue="ROLE_USUARIO" />
+								        </h:selectOneMenu>
+								        
+			    						<center>			
+											<h:commandButton class="btn btn-default navbar-btn" action="#{usuarioBean.salvar}" value="Salvar"/>
+										</center>
+				
+									</h:panelGrid>
+									
+						        </sec:ifAnyGranted>
+							        
+						        <sec:ifNotGranted roles="ROLE_ADMINISTRADOR">
+						        
+		    						<!-- É necessário deixar esses campos hidden pois o atributo disable faz com que o jsf não leve mais o valor do campo no submit -->
+									<h:inputHidden value="#{usuarioBean.usuario.nome}"/>
+									<h:inputHidden value="#{usuarioBean.usuario.login}"/>
+									<h:inputHidden value="#{usuarioBean.tipo}"/>
+						        	
+									<h:panelGrid columns="2">
+						        
+										<h:outputLabel class="navbar-text" value="Nome:" for="nome" />
+										<h:inputText id="nome" label="Nome" value="#{usuarioBean.usuario.nome}"  maxlength="250" class="form-control" placeholder="Nome">
+										</h:inputText>					
+											
+										<h:outputLabel class="navbar-text" value="Usuário:" for="login"/>
+										<h:inputText id="login" 
+										             label="Usuário" 
+										             value="#{usuarioBean.usuario.login}" 
+										             size="50" maxlength="50"
+										             class="form-control" placeholder="Login" disabled="true">
+										</h:inputText>
+										
+										<h:outputLabel class="navbar-text" value="Senha:" for="senha"/>
+										<h:inputSecret id="senha" label="Senha" value="#{usuarioBean.usuario.senha}" size="15" maxlength="15" redisplay="false" class="form-control" placeholder="Senha"/>
+										
+										<h:outputLabel class="navbar-text" value="Confirmar Senha:" for="confirmarsenha"/>
+										<h:inputSecret id="confirmarsenha" label="Confirmar Senha" value="#{usuarioBean.confirmarSenha}" size="15" maxlength="15" redisplay="false" class="form-control" placeholder="Confirmar Senha"/>
+										
+										<h:outputLabel class="navbar-text" value="e-Mail:" for="email"/>
+										<h:panelGroup>
+											<h:inputText id="email" 
+												label="e-Mail" 
+												value="#{usuarioBean.usuario.email}" 
+												size="100" maxlength="100"
+												class="form-control" placeholder="E-mail">
+											</h:inputText>
+										</h:panelGroup>
+										
+										
+										<h:outputLabel class="navbar-text" value="Tipo:" for="tipo"/>
+										
+										<h:selectOneMenu id="tipo" value="#{usuarioBean.tipo}" style="width:405px" styleClass="form-control" disabled="true">
+								            <f:selectItem itemLabel="Administrador" itemValue="ROLE_ADMINISTRADOR" />
+								            <f:selectItem itemLabel="Representante" itemValue="ROLE_USUARIO" />
+								        </h:selectOneMenu>
+								        
+		   	    						<center>			
+											<h:commandButton class="btn btn-default navbar-btn" action="#{usuarioBean.salvar}" value="Salvar"/>
+										</center>
+				
+									</h:panelGrid>
+									
+						        </sec:ifNotGranted>
+						        <!-- ======================================================================================================================================= -->
+							</h:form>
+						
+						</div>
+					
+					</div>
+					
+						
+					<sec:ifAnyGranted roles="ROLE_ADMINISTRADOR">
+						
+						<h:form id = "grid_usuario">
+						
+							<br/>
+		                   	
+       	                    <div class="panel panel-default">
+					  			<div class="panel-heading">Área administrativa </div>
+							  	<div class="panel-body">	
+		                   	
+									<h:commandButton class="btn btn-default navbar-btn" action="#{usuarioBean.novo}" value="Novo"/>
+		
+									<h:dataTable value="#{usuarioBean.lista}" var="usuario"  rules="rows" cellpadding="5" styleClass="mGrid"  rowClasses="alt" >
+										<f:facet name="caption">
+			                             	Use a listagem abaixo para realizar alterações, edição e exclusão dos usuários.
+					                   	</f:facet>
+										<f:facet name="header"><center>Usuários Cadastrados</center></f:facet>
+										
+										<h:column>
+											<f:facet name="header">Código</f:facet>
+											<h:outputText value="#{usuario.codigo}" />
+										</h:column>
+										<h:column>
+											<f:facet name="header">Nome</f:facet>
+											<h:outputText value="#{usuario.nome}" />
+										</h:column>
+										<h:column>
+											<f:facet name="header">Login</f:facet>
+											<h:outputText value="#{usuario.login}" />
+										</h:column>
+										<h:column>
+											<f:facet name="header">e-Mail</f:facet>
+											<a href="mailto:#{usuario.email}">#{usuario.email}</a>
+										</h:column>
+										<h:column>
+											<f:facet name="header">Permissões</f:facet>
+											<h:graphicImage library="images/cadastro_usuario" name="adm_#{usuario.permissao.contains('ROLE_ADMINISTRADOR')}.png" style="border:0"/>
+										</h:column>
+										<h:column>
+											<h:commandLink action="#{usuarioBean.editar}" update="cadastro" title="Editar Usuário">
+												<h:graphicImage library="images/grid" name="editar.png" style="border:0"/>
+												<f:setPropertyActionListener target="#{usuarioBean.usuario}" value="#{usuario}"/>
+												<f:setPropertyActionListener target="#{usuarioBean.destinoSalvar}" value="/restrito/cadastro_usuario"/>
+											</h:commandLink>
+										</h:column>
+										<h:column>
+											
+											<h:commandLink action="#{usuarioBean.excluir}" onclick="if (!confirm('Confirma a exclusão do usuário #{usuario.nome}?')) return false;" update="grid_usuario">
+												<h:graphicImage library="images/grid" name="deletar.png" style="border:0"/>
+												<f:setPropertyActionListener target="#{usuarioBean.usuario}" value="#{usuario}"/>
+											</h:commandLink>
+																    			
+										</h:column>
+									</h:dataTable>
+									
+								</div>
+								
+							</div>
+							
+						 
+						</h:form>
+						
+							
+					</sec:ifAnyGranted>
+						
+                </div>
+            </div>    
+			
+		</ui:define>
+		
+
+						
+
+	</ui:composition>
+ 
+
+</html>
